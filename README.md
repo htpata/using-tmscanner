@@ -1,4 +1,4 @@
 # using-tmscanner
 demo usage of tmscanner
 
-Using tm-scanner v7
+Using tm-scanner v8
