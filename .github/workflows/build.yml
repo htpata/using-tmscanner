@@ -1,36 +1,25 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Trigger analysis when pushing in "main" branch. Change this to another branch if you need to
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    branches:
+      - main
+name: TMScanner Workflow
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  tmscan:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: TMScanner Scan
+      uses: htpata/tmscanner-github-action@main
+      env:
+        # All parameters are required
+        # TM_URL: URL of the TMScanner system assigned to you by the TMScanner team (in this example: http://129.148.26.53:6862)
+        # TM_REPOSITORY_ID: Use an already existing repository id in the TMScanner system (in this example: 120)
+        # TM_SOURCE: The .sol file (or .zip with many .sol files inside) that you want to analyze (in this example: hello.sol)
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TM_URL: http://129.148.26.53:6862
+        TM_TOKEN: ${{ secrets.TM_TOKEN }}
+        TM_REPOSITORY_ID: 120
+        TM_SOURCE: hello.sol
